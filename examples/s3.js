@@ -4,7 +4,7 @@ import s3 from 'k6/x/neofs/s3';
 
 const payload = open('../go.sum', 'b');
 const bucket = "cats"
-const s3_cli = s3.connect("http://s3.neofs.devenv:8080")
+const s3_cli = s3.connect("https://s3.neofs.devenv:8080", {'no_verify_ssl': 'true'})
 
 export const options = {
     stages: [

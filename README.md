@@ -79,6 +79,15 @@ import s3 from 'k6/x/neofs/s3';
 const s3_cli = s3.connect("http://s3.neofs.devenv:8080")
 ```
 
+You can also provide additional options:
+```js
+import s3 from 'k6/x/neofs/s3';
+const s3_cli = s3.connect("http://s3.neofs.devenv:8080", {'no_verify_ssl': 'true', 'timeout': '60s'})
+```
+
+* `no_verify_ss` - Bool. If `true` - skip verifying the s3 certificate chain and host name (useful if s3 uses self-signed certificates)
+* `timeout` - Duration. Set timeout for requests (in http client). If omitted or zero - timeout is infinite.
+
 ### Methods
 - `createBucket(bucket, params)`. Returns dictionary with `success` boolean flag
   and `error` string. The `params` is a dictionary (e.g. `{acl:'private',lock_enabled:'true',location_constraint:'ru'}`)

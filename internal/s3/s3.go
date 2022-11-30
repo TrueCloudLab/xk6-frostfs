@@ -1,7 +1,11 @@
 package s3
 
 import (
+	"crypto/tls"
 	"fmt"
+	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -47,7 +51,7 @@ func (s *S3) Exports() modules.Exports {
 	return modules.Exports{Default: s}
 }
 
-func (s *S3) Connect(endpoint string) (*Client, error) {
+func (s *S3) Connect(endpoint string, params map[string]string) (*Client, error) {
 	resolver := aws.EndpointResolverWithOptionsFunc(func(_, _ string, _ ...interface{}) (aws.Endpoint, error) {
 		return aws.Endpoint{
 			URL: endpoint,
@@ -59,11 +63,34 @@ func (s *S3) Connect(endpoint string) (*Client, error) {
 		return nil, fmt.Errorf("configuration error: %w", err)
 	}
 
+	var noVerifySSL bool
+	if noVerifySSLStr, ok := params["no_verify_ssl"]; ok {
+		if noVerifySSL, err = strconv.ParseBool(noVerifySSLStr); err != nil {
+			return nil, fmt.Errorf("invalid value for 'no_verify_ssl': '%s'", noVerifySSLStr)
+		}
+	}
+
+	var timeout time.Duration
+	if timeoutStr, ok := params["timeout"]; ok {
+		if timeout, err = time.ParseDuration(timeoutStr); err != nil {
+			return nil, fmt.Errorf("invalid value for 'timeout': '%s'", timeoutStr)
+		}
+	}
+
 	cli := s3.NewFromConfig(cfg, func(options *s3.Options) {
 		// use 'domain/bucket/key' instead of default 'bucket.domain/key' scheme
 		options.UsePathStyle = true
 		// do not retry failed requests, by default client does up to 3 retry
 		options.Retryer = aws.NopRetryer{}
+		// s3 sometimes use self-signed certs
+		options.HTTPClient = &http.Client{
+			Transport: &http.Transport{
+				TLSClientConfig: &tls.Config{
+					InsecureSkipVerify: noVerifySSL,
+				},
+			},
+			Timeout: timeout,
+		}
 	})
 
 	// register metrics
