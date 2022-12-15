@@ -8,11 +8,11 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/TrueCloudLab/xk6-frostfs/internal/stats"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/aws/aws-sdk-go-v2/service/s3/types"
 	"github.com/dop251/goja"
-	"github.com/nspcc-dev/xk6-neofs/internal/stats"
 	"go.k6.io/k6/js/modules"
 	"go.k6.io/k6/metrics"
 )

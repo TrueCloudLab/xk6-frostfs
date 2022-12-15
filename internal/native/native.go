@@ -5,11 +5,11 @@ import (
 	"math"
 	"time"
 
+	"github.com/TrueCloudLab/frostfs-sdk-go/client"
+	neofsecdsa "github.com/TrueCloudLab/frostfs-sdk-go/crypto/ecdsa"
+	"github.com/TrueCloudLab/frostfs-sdk-go/session"
 	"github.com/google/uuid"
 	"github.com/nspcc-dev/neo-go/pkg/crypto/keys"
-	"github.com/nspcc-dev/neofs-sdk-go/client"
-	neofsecdsa "github.com/nspcc-dev/neofs-sdk-go/crypto/ecdsa"
-	"github.com/nspcc-dev/neofs-sdk-go/session"
 	"go.k6.io/k6/js/modules"
 	"go.k6.io/k6/metrics"
 )

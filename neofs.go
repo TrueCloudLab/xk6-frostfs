@@ -1,10 +1,10 @@
 package xk6_neofs
 
 import (
-	_ "github.com/nspcc-dev/xk6-neofs/internal/datagen"
-	_ "github.com/nspcc-dev/xk6-neofs/internal/native"
-	_ "github.com/nspcc-dev/xk6-neofs/internal/registry"
-	_ "github.com/nspcc-dev/xk6-neofs/internal/s3"
+	_ "github.com/TrueCloudLab/xk6-frostfs/internal/datagen"
+	_ "github.com/TrueCloudLab/xk6-frostfs/internal/native"
+	_ "github.com/TrueCloudLab/xk6-frostfs/internal/registry"
+	_ "github.com/TrueCloudLab/xk6-frostfs/internal/s3"
 	"go.k6.io/k6/js/modules"
 )
 
