@@ -15,6 +15,8 @@ parser.add_argument('--size', help='Upload objects size in kb')
 parser.add_argument('--containers', help='Number of containers to create')
 parser.add_argument('--out', help='JSON file with output')
 parser.add_argument('--preload_obj', help='Number of pre-loaded objects')
+parser.add_argument('--wallet', help='Wallet file path')
+parser.add_argument('--config', help='Wallet config file path')
 parser.add_argument(
     "--policy",
     help="Container placement policy",
@@ -34,6 +36,9 @@ def main():
 
     endpoints = args.endpoint.split(',')
 
+    wallet = args.wallet
+    wallet_config = args.config
+
     if args.update:
         # Open file
         with open(args.out) as f:
@@ -43,7 +48,7 @@ def main():
         print(f"Create containers: {args.containers}")
         with ProcessPoolExecutor(max_workers=50) as executor:
             containers_runs = {executor.submit(create_container, endpoints[random.randrange(len(endpoints))],
-                                               args.policy): _ for _ in range(int(args.containers))}
+                                               args.policy, wallet, wallet_config): _ for _ in range(int(args.containers))}
 
         for run in containers_runs:
             if run.result():
@@ -63,7 +68,7 @@ def main():
         print(f" > Upload objects for container {container}")
         with ProcessPoolExecutor(max_workers=50) as executor:
             objects_runs = {executor.submit(upload_object, container, payload_filepath,
-                              endpoints[random.randrange(len(endpoints))]): _ for _ in range(int(args.preload_obj))}
+                              endpoints[random.randrange(len(endpoints))], wallet, wallet_config): _ for _ in range(int(args.preload_obj))}
 
         for run in objects_runs:
             if run.result():

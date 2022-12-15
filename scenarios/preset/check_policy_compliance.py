@@ -16,6 +16,8 @@ parser.add_argument('--expected_copies', help="Expected amount of object copies"
 parser.add_argument('--preset_file', help='JSON file path with preset')
 parser.add_argument('--max_workers', help='Max workers in parallel', default=50)
 parser.add_argument('--print_failed', help='Print failed objects', default=False)
+parser.add_argument('--wallet', help='Wallet file path')
+parser.add_argument('--config', help='Wallet config file path')
 
 
 args: Namespace = parser.parse_args()
@@ -35,12 +37,14 @@ def main():
     objs_len = len(objs)
 
     endpoints = args.endpoints.split(',')
+    wallet = args.wallet
+    wallet_config = args.config
 
     final_discrubution = Counter(dict.fromkeys(endpoints, 0))
 
     with ProcessPoolExecutor(max_workers=50) as executor:
         search_runs = {executor.submit(check_object_amounts, obj.get('container'), obj.get('object'), endpoints,
-                                       int(args.expected_copies)): obj for obj in objs}
+                                       int(args.expected_copies), wallet, wallet_config): obj for obj in objs}
 
         ProgressBar.start()
 
@@ -64,13 +68,13 @@ def main():
         print(f'{endpoint}: {final_discrubution[endpoint]}')
 
 
-def check_object_amounts(cid, oid, endpoints, expected_copies):
+def check_object_amounts(cid, oid, endpoints, expected_copies, wallet, wallet_config):
     distribution = Counter(dict.fromkeys(endpoints, 0))
 
     copies_in_cluster = 0
 
     for endpoint in endpoints:
-        copy_on_endpoint = search_object_by_id(cid, oid, endpoint, ttl=1)
+        copy_on_endpoint = search_object_by_id(cid, oid, endpoint, wallet, wallet_config, ttl=1)
 
         copies_in_cluster += int(copy_on_endpoint)
 
