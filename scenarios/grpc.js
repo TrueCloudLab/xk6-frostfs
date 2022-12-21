@@ -17,7 +17,7 @@ const read_size = JSON.parse(open(__ENV.PREGEN_JSON)).obj_size;
 // Select random gRPC endpoint for current VU
 const grpc_endpoints = __ENV.GRPC_ENDPOINTS.split(',');
 const grpc_endpoint = grpc_endpoints[Math.floor(Math.random() * grpc_endpoints.length)];
-const grpc_client = native.connect(grpc_endpoint, '');
+const grpc_client = native.connect(grpc_endpoint, '', __ENV.DIAL_TIMEOUT ? parseInt(__ENV.DIAL_TIMEOUT) : 5, __ENV.STREAM_TIMEOUT ? parseInt(__ENV.STREAM_TIMEOUT) : 15);
 
 const registry_enabled = !!__ENV.REGISTRY_FILE;
 const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE) : undefined;

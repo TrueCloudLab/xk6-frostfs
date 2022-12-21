@@ -51,7 +51,7 @@ func (n *Native) Exports() modules.Exports {
 	return modules.Exports{Default: n}
 }
 
-func (n *Native) Connect(endpoint, hexPrivateKey string) (*Client, error) {
+func (n *Native) Connect(endpoint, hexPrivateKey string, dialTimeout, streamTimeout int) (*Client, error) {
 	var (
 		cli client.Client
 		pk  *keys.PrivateKey
@@ -73,7 +73,9 @@ func (n *Native) Connect(endpoint, hexPrivateKey string) (*Client, error) {
 
 	var prmDial client.PrmDial
 	prmDial.SetServerURI(endpoint)
-	prmDial.SetTimeout(5 * time.Second)
+
+	prmDial.SetTimeout(time.Duration(dialTimeout) * time.Second)
+	prmDial.SetStreamTimeout(time.Duration(streamTimeout) * time.Second)
 
 	err = cli.Dial(prmDial)
 	if err != nil {
