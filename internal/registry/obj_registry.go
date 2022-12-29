@@ -24,7 +24,7 @@ const (
 
 const bucketName = "_object"
 
-// ObjectInfo represents information about neoFS object that has been created
+// ObjectInfo represents information about FrostFS object that has been created
 // via gRPC/HTTP/S3 API.
 type ObjectInfo struct {
 	Id          uint64    // Identifier in bolt DB

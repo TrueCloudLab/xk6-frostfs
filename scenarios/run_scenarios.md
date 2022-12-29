@@ -35,7 +35,7 @@ $ ./k6 run -e DURATION=60 -e WRITE_OBJ_SIZE=8192 -e READERS=20 -e WRITERS=20 -e 
 ```
 
 Options (in addition to the common options):
-  * `GRPC_ENDPOINTS` - GRPC endpoints of neoFS in format `host:port`. To specify multiple endpoints separate them by comma.
+  * `GRPC_ENDPOINTS` - GRPC endpoints of FrostFS storage in format `host:port`. To specify multiple endpoints separate them by comma.
   * `DELETERS` - number of VUs performing delete operations (using deleters requires that options `DELETE_AGE` and `REGISTRY_FILE` are specified as well).
   * `DELETE_AGE` - age of object in seconds before which it can not be deleted. This parameter can be used to control how many objects we have in the system under load.
   * `SLEEP_DELETE` - time interval (in seconds) between deleting VU iterations.
@@ -63,7 +63,7 @@ Options (in addition to the common options):
 1. Create s3 credentials:
 
 ```shell
-$ neofs-s3-authmate issue-secret --wallet wallet.json --peer host1:8080 --gate-public-key 03d33a2cc7b8daaa5a3df3fccf065f7cf1fc6a3279efc161fcec512dcc0c1b2277 --gate-public-key 03ff0ad212e10683234442530bfd71d0bb18c3fbd6459aba768eacf158b0c359a2 --gate-public-key 033ae03ff30ed3b6665af69955562cfc0eae18d50e798ab31f054ee22e32fee993 --gate-public-key 02127c7498de0765d2461577c9d4f13f916eefd1884896183e6de0d9a85d17f2fb --bearer-rules rules.json  --container-placement-policy "REP 1 IN X CBF 1 SELECT 1 FROM * AS X" --container-policy ./scenarios/files/policy.json
+$ frostfs-s3-authmate issue-secret --wallet wallet.json --peer host1:8080 --gate-public-key 03d33a2cc7b8daaa5a3df3fccf065f7cf1fc6a3279efc161fcec512dcc0c1b2277 --gate-public-key 03ff0ad212e10683234442530bfd71d0bb18c3fbd6459aba768eacf158b0c359a2 --gate-public-key 033ae03ff30ed3b6665af69955562cfc0eae18d50e798ab31f054ee22e32fee993 --gate-public-key 02127c7498de0765d2461577c9d4f13f916eefd1884896183e6de0d9a85d17f2fb --bearer-rules rules.json  --container-placement-policy "REP 1 IN X CBF 1 SELECT 1 FROM * AS X" --container-policy ./scenarios/files/policy.json
 
 Enter password for wallet.json > 
 {

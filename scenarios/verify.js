@@ -1,6 +1,6 @@
-import native from 'k6/x/neofs/native';
-import registry from 'k6/x/neofs/registry';
-import s3 from 'k6/x/neofs/s3';
+import native from 'k6/x/frostfs/native';
+import registry from 'k6/x/frostfs/registry';
+import s3 from 'k6/x/frostfs/s3';
 import { sleep } from 'k6';
 import { Counter } from 'k6/metrics';
 

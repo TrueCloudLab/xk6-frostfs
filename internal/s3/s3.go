@@ -15,7 +15,7 @@ import (
 )
 
 // RootModule is the global module object type. It is instantiated once per test
-// run and will be used to create k6/x/neofs/s3 module instances for each VU.
+// run and will be used to create k6/x/frostfs/s3 module instances for each VU.
 type RootModule struct{}
 
 // S3 represents an instance of the module for every VU.
@@ -35,7 +35,7 @@ var (
 )
 
 func init() {
-	modules.Register("k6/x/neofs/s3", new(RootModule))
+	modules.Register("k6/x/frostfs/s3", new(RootModule))
 }
 
 // NewModuleInstance implements the modules.Module interface and returns

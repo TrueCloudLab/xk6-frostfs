@@ -3,7 +3,7 @@
 import argparse
 import json
 
-from helpers.neofs_cli import get_object
+from helpers.frostfs_cli import get_object
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--endpoint', help='Node address')

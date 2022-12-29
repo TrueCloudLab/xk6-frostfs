@@ -4,7 +4,7 @@ from helpers.cmd import execute_cmd
 
 
 def create_container(endpoint, policy, wallet_file, wallet_config):
-    cmd_line = f"neofs-cli --rpc-endpoint {endpoint} container create --wallet {wallet_file} --config {wallet_config} " \
+    cmd_line = f"frostfs-cli --rpc-endpoint {endpoint} container create --wallet {wallet_file} --config {wallet_config} " \
                f" --policy '{policy}' --basic-acl public-read-write --await"
 
     output, success = execute_cmd(cmd_line)
@@ -29,7 +29,7 @@ def create_container(endpoint, policy, wallet_file, wallet_config):
 
 def upload_object(container, payload_filepath, endpoint, wallet_file, wallet_config):
     object_name = ""
-    cmd_line = f"neofs-cli --rpc-endpoint {endpoint} object put --file {payload_filepath} --wallet {wallet_file} --config {wallet_config} " \
+    cmd_line = f"frostfs-cli --rpc-endpoint {endpoint} object put --file {payload_filepath} --wallet {wallet_file} --config {wallet_config} " \
                f"--cid {container} --no-progress"
     output, success = execute_cmd(cmd_line)
 
@@ -50,7 +50,7 @@ def upload_object(container, payload_filepath, endpoint, wallet_file, wallet_con
 
 
 def get_object(cid, oid, endpoint, out_filepath, wallet_file, wallet_config):
-    cmd_line = f"neofs-cli object get -r {endpoint} --cid {cid} --oid {oid} --wallet {wallet_file} --config {wallet_config} " \
+    cmd_line = f"frostfs-cli object get -r {endpoint} --cid {cid} --oid {oid} --wallet {wallet_file} --config {wallet_config} " \
                f"--file {out_filepath}"
 
     output, success = execute_cmd(cmd_line)
@@ -64,7 +64,7 @@ def get_object(cid, oid, endpoint, out_filepath, wallet_file, wallet_config):
 
 
 def search_object_by_id(cid, oid, endpoint, wallet_file, wallet_config, ttl=2):
-    cmd_line = f"neofs-cli object search --ttl {ttl} -r {endpoint} --cid {cid} --oid {oid} --wallet {wallet_file} --config {wallet_config} "
+    cmd_line = f"frostfs-cli object search --ttl {ttl} -r {endpoint} --cid {cid} --oid {oid} --wallet {wallet_file} --config {wallet_config} "
 
     output, success = execute_cmd(cmd_line)
 

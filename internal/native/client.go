@@ -352,7 +352,7 @@ func (c *Client) Onsite(containerID string, payload goja.ArrayBuffer) PreparedOb
 		// not sure if load test needs object transformation
 		// with parent-child relation; if needs, then replace
 		// this code with the usage of object transformer from
-		// neofs-loader or distribution.
+		// frostfs-loader or distribution.
 		msg := fmt.Sprintf("payload size %d is bigger than network limit %d", ln, maxObjectSize)
 		panic(msg)
 	}

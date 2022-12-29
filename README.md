@@ -1,14 +1,11 @@
 <p align="center">
-<img src="./.github/logo.svg" width="500px" alt="NeoFS">
-</p>
-<p align="center">
-  <a href="https://go.k6.io/k6">k6</a> extension to test and benchmark <a href="https://fs.neo.org">NeoFS</a> related protocols.
+  <a href="https://go.k6.io/k6">k6</a> extension to test and benchmark FrostFS related protocols.
 </p>
 
 ---
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
-# xk6-neofs
+# xk6-frostfs
 
 # Build
 
@@ -24,13 +21,13 @@ go install go.k6.io/xk6/cmd/xk6@latest
 
 2. Clone this repository
 ```shell
-git clone github.com/nspcc-dev/xk6-neofs
-cd xk6-neofs
+git clone github.com/TrueCloudLab/xk6-frostfs
+cd xk6-frostfs
 ```
 
 3. Build the binary:
 ```shell
-xk6 build --with github.com/nspcc-dev/xk6-neofs=.
+xk6 build --with github.com/TrueCloudLab/xk6-frostfs=.
 ```
 
 4. Run k6:
@@ -43,12 +40,12 @@ xk6 build --with github.com/nspcc-dev/xk6-neofs=.
 ## Native
 
 Create native client with `connect` method. Arguments:
-- neofs storage node endpoint
+- frostfs storage node endpoint
 - hex encoded private key (empty value produces random key)
 
 ```js
-import native from 'k6/x/neofs/native';
-const neofs_cli = native.connect("s01.neofs.devenv:8080", "")
+import native from 'k6/x/frostfs/native';
+const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "")
 ```
 
 ### Methods
@@ -62,8 +59,8 @@ const neofs_cli = native.connect("s01.neofs.devenv:8080", "")
   boolean flag, `object_id` string, and `error` string.
 - `get(container_id, object_id)`. Returns dictionary with `success` boolean
   flag, and `error` string.
-- `onsite(container_id, payload)`. Returns NeoFS object instance with prepared
-  headers. Invoke `put(headers)` method on this object to upload it into NeoFS.
+- `onsite(container_id, payload)`. Returns FrostFS object instance with prepared
+  headers. Invoke `put(headers)` method on this object to upload it into FrostFS.
   It returns dictionary with `success` boolean flag, `object_id` string and
   `error` string.
 
@@ -75,14 +72,14 @@ Create s3 client with `connect` method. Arguments:
 Credentials are taken from default AWS configuration files and ENVs.
 
 ```js
-import s3 from 'k6/x/neofs/s3';
-const s3_cli = s3.connect("http://s3.neofs.devenv:8080")
+import s3 from 'k6/x/frostfs/s3';
+const s3_cli = s3.connect("http://s3.frostfs.devenv:8080")
 ```
 
 You can also provide additional options:
 ```js
-import s3 from 'k6/x/neofs/s3';
-const s3_cli = s3.connect("http://s3.neofs.devenv:8080", {'no_verify_ssl': 'true', 'timeout': '60s'})
+import s3 from 'k6/x/frostfs/s3';
+const s3_cli = s3.connect("http://s3.frostfs.devenv:8080", {'no_verify_ssl': 'true', 'timeout': '60s'})
 ```
 
 * `no_verify_ss` - Bool. If `true` - skip verifying the s3 certificate chain and host name (useful if s3 uses self-signed certificates)

@@ -5,7 +5,7 @@ import (
 )
 
 // RootModule is the global module object type. It is instantiated once per test
-// run and will be used to create k6/x/neofs/registry module instances for each VU.
+// run and will be used to create k6/x/frostfs/registry module instances for each VU.
 type RootModule struct{}
 
 // Datagen represents an instance of the module for every VU.
@@ -20,7 +20,7 @@ var (
 )
 
 func init() {
-	modules.Register("k6/x/neofs/datagen", new(RootModule))
+	modules.Register("k6/x/frostfs/datagen", new(RootModule))
 }
 
 // NewModuleInstance implements the modules.Module interface and returns

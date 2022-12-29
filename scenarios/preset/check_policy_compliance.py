@@ -8,7 +8,7 @@ from collections import Counter
 from concurrent.futures import ProcessPoolExecutor
 
 from helpers.cmd import ProgressBar
-from helpers.neofs_cli import search_object_by_id
+from helpers.frostfs_cli import search_object_by_id
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--endpoints', help='Node address')

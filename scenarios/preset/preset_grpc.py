@@ -8,7 +8,7 @@ from argparse import Namespace
 from concurrent.futures import ProcessPoolExecutor
 
 from helpers.cmd import random_payload
-from helpers.neofs_cli import create_container, upload_object
+from helpers.frostfs_cli import create_container, upload_object
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--size', help='Upload objects size in kb')

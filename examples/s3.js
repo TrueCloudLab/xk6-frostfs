@@ -1,10 +1,10 @@
 import {uuidv4} from 'https://jslib.k6.io/k6-utils/1.2.0/index.js';
 import {fail} from 'k6'
-import s3 from 'k6/x/neofs/s3';
+import s3 from 'k6/x/frostfs/s3';
 
 const payload = open('../go.sum', 'b');
 const bucket = "cats"
-const s3_cli = s3.connect("https://s3.neofs.devenv:8080", {'no_verify_ssl': 'true'})
+const s3_cli = s3.connect("https://s3.frostfs.devenv:8080", {'no_verify_ssl': 'true'})
 
 export const options = {
     stages: [

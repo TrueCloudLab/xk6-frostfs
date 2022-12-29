@@ -1,4 +1,4 @@
-package xk6_neofs
+package xk6_frostfs
 
 import (
 	_ "github.com/TrueCloudLab/xk6-frostfs/internal/datagen"
@@ -13,9 +13,9 @@ const (
 )
 
 func init() {
-	modules.Register("k6/x/neofs", &NeoFS{Version: version})
+	modules.Register("k6/x/frostfs", &FrostFS{Version: version})
 }
 
-type NeoFS struct {
+type FrostFS struct {
 	Version string
 }

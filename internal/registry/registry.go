@@ -10,7 +10,7 @@ import (
 )
 
 // RootModule is the global module object type. It is instantiated once per test
-// run and will be used to create k6/x/neofs/registry module instances for each VU.
+// run and will be used to create k6/x/frostfs/registry module instances for each VU.
 type RootModule struct {
 	// Stores object registry by path of database file. We should have only single instance
 	// of registry per each file
@@ -38,7 +38,7 @@ func init() {
 		registries: make(map[string]*ObjRegistry),
 		selectors:  make(map[string]*ObjSelector),
 	}
-	modules.Register("k6/x/neofs/registry", rootModule)
+	modules.Register("k6/x/frostfs/registry", rootModule)
 }
 
 // NewModuleInstance implements the modules.Module interface and returns

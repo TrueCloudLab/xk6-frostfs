@@ -1,6 +1,6 @@
-import datagen from 'k6/x/neofs/datagen';
-import native from 'k6/x/neofs/native';
-import registry from 'k6/x/neofs/registry';
+import datagen from 'k6/x/frostfs/datagen';
+import native from 'k6/x/frostfs/native';
+import registry from 'k6/x/frostfs/registry';
 import { SharedArray } from 'k6/data';
 import { sleep } from 'k6';
 

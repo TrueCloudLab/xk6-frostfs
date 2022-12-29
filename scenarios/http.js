@@ -1,5 +1,5 @@
-import datagen from 'k6/x/neofs/datagen';
-import registry from 'k6/x/neofs/registry';
+import datagen from 'k6/x/frostfs/datagen';
+import registry from 'k6/x/frostfs/registry';
 import http from 'k6/http';
 import { SharedArray } from 'k6/data';
 import { sleep } from 'k6';
