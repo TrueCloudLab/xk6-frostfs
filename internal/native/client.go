@@ -137,7 +137,6 @@ func (c *Client) Delete(containerID string, objectID string) DeleteResponse {
 		panic(err)
 	}
 
-	stats.Report(c.vu, objDeleteTotal, 1)
 	start := time.Now()
 
 	var prm client.PrmObjectDelete
@@ -151,6 +150,7 @@ func (c *Client) Delete(containerID string, objectID string) DeleteResponse {
 		return DeleteResponse{Success: false, Error: err.Error()}
 	}
 
+	stats.Report(c.vu, objDeleteTotal, 1)
 	stats.Report(c.vu, objDeleteDuration, metrics.D(time.Since(start)))
 	return DeleteResponse{Success: true}
 }
@@ -168,7 +168,6 @@ func (c *Client) Get(containerID, objectID string) GetResponse {
 		panic(err)
 	}
 
-	stats.Report(c.vu, objGetTotal, 1)
 	start := time.Now()
 
 	var prm client.PrmObjectGet
@@ -185,6 +184,7 @@ func (c *Client) Get(containerID, objectID string) GetResponse {
 		return GetResponse{Success: false, Error: err.Error()}
 	}
 
+	stats.Report(c.vu, objGetTotal, 1)
 	stats.Report(c.vu, objGetDuration, metrics.D(time.Since(start)))
 	stats.ReportDataReceived(c.vu, float64(objSize))
 	return GetResponse{Success: true}
@@ -428,7 +428,6 @@ func put(vu modules.VU, bufSize int, cli *client.Client, tok *session.Object,
 	sz := rdr.Size()
 
 	// starting upload
-	stats.Report(vu, objPutTotal, 1)
 	start := time.Now()
 
 	var prm client.PrmObjectPutInit
@@ -462,10 +461,11 @@ func put(vu modules.VU, bufSize int, cli *client.Client, tok *session.Object,
 		return nil, err
 	}
 
+	stats.Report(vu, objPutTotal, 1)
 	stats.ReportDataSent(vu, float64(sz))
 	stats.Report(vu, objPutDuration, metrics.D(time.Since(start)))
 
-	return resp, err
+	return resp, nil
 }
 
 func parseNetworkInfo(ctx context.Context, cli *client.Client) (maxObjSize, epoch uint64, hhDisabled bool, err error) {
