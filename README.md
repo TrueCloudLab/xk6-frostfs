@@ -45,10 +45,12 @@ xk6 build --with github.com/TrueCloudLab/xk6-frostfs=.
 Create native client with `connect` method. Arguments:
 - frostfs storage node endpoint
 - hex encoded private key (empty value produces random key)
+- dial timeout in seconds (0 for the default value)
+- stream timeout in seconds (0 for the default value)
 
 ```js
 import native from 'k6/x/frostfs/native';
-const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "")
+const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "", 0, 0)
 ```
 
 ### Methods

@@ -3,7 +3,7 @@ import native from 'k6/x/frostfs/native';
 
 const payload = open('../go.sum', 'b');
 const container = "AjSxSNNXbJUDPqqKYm1VbFVDGCakbpUNH8aGjPmGAH3B"
-const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "")
+const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "", 0, 0)
 const frostfs_obj = frostfs_cli.onsite(container, payload)
 
 export const options = {

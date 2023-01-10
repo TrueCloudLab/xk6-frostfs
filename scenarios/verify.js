@@ -25,7 +25,7 @@ let grpc_client = undefined;
 if (__ENV.GRPC_ENDPOINTS) {
     const grpcEndpoints = __ENV.GRPC_ENDPOINTS.split(',');
     const grpcEndpoint = grpcEndpoints[Math.floor(Math.random() * grpcEndpoints.length)];
-    grpc_client = native.connect(grpcEndpoint, '');
+    grpc_client = native.connect(grpcEndpoint, '', __ENV.DIAL_TIMEOUT ? parseInt(__ENV.DIAL_TIMEOUT) : 0, __ENV.STREAM_TIMEOUT ? parseInt(__ENV.STREAM_TIMEOUT) : 0);
 }
 
 // Connect to random S3 endpoint

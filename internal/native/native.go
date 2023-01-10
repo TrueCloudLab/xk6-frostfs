@@ -74,8 +74,13 @@ func (n *Native) Connect(endpoint, hexPrivateKey string, dialTimeout, streamTime
 	var prmDial client.PrmDial
 	prmDial.SetServerURI(endpoint)
 
-	prmDial.SetTimeout(time.Duration(dialTimeout) * time.Second)
-	prmDial.SetStreamTimeout(time.Duration(streamTimeout) * time.Second)
+	if dialTimeout > 0 {
+		prmDial.SetTimeout(time.Duration(dialTimeout) * time.Second)
+	}
+
+	if streamTimeout > 0 {
+		prmDial.SetStreamTimeout(time.Duration(streamTimeout) * time.Second)
+	}
 
 	err = cli.Dial(prmDial)
 	if err != nil {

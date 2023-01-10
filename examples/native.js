@@ -3,7 +3,7 @@ import {fail} from "k6";
 import native from 'k6/x/frostfs/native';
 
 const payload = open('../go.sum', 'b');
-const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "1dd37fba80fec4e6a6f13fd708d8dcb3b29def768017052f6c930fa1c5d90bbb")
+const frostfs_cli = native.connect("s01.frostfs.devenv:8080", "1dd37fba80fec4e6a6f13fd708d8dcb3b29def768017052f6c930fa1c5d90bbb", 0, 0)
 
 export const options = {
     stages: [

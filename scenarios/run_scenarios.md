@@ -39,6 +39,8 @@ Options (in addition to the common options):
   * `DELETERS` - number of VUs performing delete operations (using deleters requires that options `DELETE_AGE` and `REGISTRY_FILE` are specified as well).
   * `DELETE_AGE` - age of object in seconds before which it can not be deleted. This parameter can be used to control how many objects we have in the system under load.
   * `SLEEP_DELETE` - time interval (in seconds) between deleting VU iterations.
+  * `DIAL_TIMEOUT` - timeout to connect to a node (in seconds).
+  * `STREAM_TIMEOUT` - timeout for a single stream message for `PUT`/`GET` operations (in seconds).
 
 ## HTTP
 
@@ -121,6 +123,8 @@ Options:
   * `REGISTRY_FILE` - database file from which objects for verification should be read.
   * `SLEEP` - time interval (in seconds) between VU iterations.
   * `SELECTION_SIZE` - size of batch to select for deletion (default: 1000).
+  * `DIAL_TIMEOUT` - timeout to connect to a node (in seconds).
+  * `STREAM_TIMEOUT` - timeout for a single stream message for `PUT`/`GET` operations (in seconds).
 
 ## Verify preset 
 
