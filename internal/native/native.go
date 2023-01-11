@@ -79,7 +79,7 @@ func (n *Native) Connect(endpoint, hexPrivateKey string, dialTimeout, streamTime
 
 	err = cli.Dial(prmDial)
 	if err != nil {
-		return nil, fmt.Errorf("dial endpoint: %w %w", endpoint, err)
+		return nil, fmt.Errorf("dial endpoint: %s %w", endpoint, err)
 	}
 
 	// generate session token
@@ -88,7 +88,7 @@ func (n *Native) Connect(endpoint, hexPrivateKey string, dialTimeout, streamTime
 	prmSessionCreate.SetExp(exp)
 	sessionResp, err := cli.SessionCreate(n.vu.Context(), prmSessionCreate)
 	if err != nil {
-		return nil, fmt.Errorf("dial endpoint: %w %w", endpoint, err)
+		return nil, fmt.Errorf("dial endpoint: %s %w", endpoint, err)
 	}
 
 	var id uuid.UUID
