@@ -8,6 +8,7 @@ import (
 	"github.com/TrueCloudLab/frostfs-sdk-go/client"
 	frostfsecdsa "github.com/TrueCloudLab/frostfs-sdk-go/crypto/ecdsa"
 	"github.com/TrueCloudLab/frostfs-sdk-go/session"
+	"github.com/TrueCloudLab/xk6-frostfs/internal/logging"
 	"github.com/google/uuid"
 	"github.com/nspcc-dev/neo-go/pkg/crypto/keys"
 	"go.k6.io/k6/js/modules"
@@ -41,6 +42,8 @@ func init() {
 // NewModuleInstance implements the modules.Module interface and returns
 // a new instance for each VU.
 func (r *RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
+	logging.InitTimestamp(vu)
+
 	mi := &Native{vu: vu}
 	return mi
 }
@@ -52,6 +55,8 @@ func (n *Native) Exports() modules.Exports {
 }
 
 func (n *Native) Connect(endpoint, hexPrivateKey string, dialTimeout, streamTimeout int) (*Client, error) {
+	logging.LogWithField(n.vu, "endpoint", endpoint)
+
 	var (
 		cli client.Client
 		pk  *keys.PrivateKey
