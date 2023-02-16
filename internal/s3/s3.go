@@ -7,7 +7,6 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/TrueCloudLab/xk6-frostfs/internal/logging"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
@@ -42,8 +41,6 @@ func init() {
 // NewModuleInstance implements the modules.Module interface and returns
 // a new instance for each VU.
 func (r *RootModule) NewModuleInstance(vu modules.VU) modules.Instance {
-	logging.InitTimestamp(vu)
-
 	mi := &S3{vu: vu}
 	return mi
 }
@@ -55,8 +52,6 @@ func (s *S3) Exports() modules.Exports {
 }
 
 func (s *S3) Connect(endpoint string, params map[string]string) (*Client, error) {
-	logging.LogWithField(s.vu, "endpoint", endpoint)
-
 	resolver := aws.EndpointResolverWithOptionsFunc(func(_, _ string, _ ...interface{}) (aws.Endpoint, error) {
 		return aws.Endpoint{
 			URL: endpoint,

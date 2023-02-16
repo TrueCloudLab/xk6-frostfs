@@ -2,6 +2,7 @@ package xk6_frostfs
 
 import (
 	_ "github.com/TrueCloudLab/xk6-frostfs/internal/datagen"
+	_ "github.com/TrueCloudLab/xk6-frostfs/internal/logging"
 	_ "github.com/TrueCloudLab/xk6-frostfs/internal/native"
 	_ "github.com/TrueCloudLab/xk6-frostfs/internal/registry"
 	_ "github.com/TrueCloudLab/xk6-frostfs/internal/s3"

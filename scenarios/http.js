@@ -17,6 +17,7 @@ const read_size = JSON.parse(open(__ENV.PREGEN_JSON)).obj_size;
 // Select random HTTP endpoint for current VU
 const http_endpoints = __ENV.HTTP_ENDPOINTS.split(',');
 const http_endpoint = http_endpoints[Math.floor(Math.random() * http_endpoints.length)];
+const log = logging.new().withField("endpoint", http_endpoint);
 
 const registry_enabled = !!__ENV.REGISTRY_FILE;
 const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE) : undefined;
@@ -86,7 +87,7 @@ export function obj_write() {
 
     const resp = http.post(`http://${http_endpoint}/upload/${container}`, data);
     if (resp.status != 200) {
-        console.log(`ERROR: ${resp.status} ${resp.error}`);
+        log.info(`ERROR: ${resp.status} ${resp.error}`);
         return;
     }
     const object_id = JSON.parse(resp.body).object_id;
@@ -103,7 +104,7 @@ export function obj_read() {
     const obj = obj_list[Math.floor(Math.random() * obj_list.length)];
     const resp = http.get(`http://${http_endpoint}/get/${obj.container}/${obj.object}`);
     if (resp.status != 200) {
-        console.log(`ERROR reading ${obj.object}: ${resp.status}`);
+        log.info(`ERROR reading ${obj.object}: ${resp.status}`);
     }
 }
 

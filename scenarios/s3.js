@@ -18,6 +18,7 @@ const read_size = JSON.parse(open(__ENV.PREGEN_JSON)).obj_size;
 const s3_endpoints = __ENV.S3_ENDPOINTS.split(',');
 const s3_endpoint = s3_endpoints[Math.floor(Math.random() * s3_endpoints.length)];
 const s3_client = s3.connect(`http://${s3_endpoint}`);
+const log = logging.new().withField("endpoint", s3_endpoint);
 
 const registry_enabled = !!__ENV.REGISTRY_FILE;
 const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE) : undefined;
@@ -113,7 +114,7 @@ export function obj_write() {
     const { payload, hash } = generator.genPayload(registry_enabled);
     const resp = s3_client.put(bucket, key, payload);
     if (!resp.success) {
-        console.log(resp.error);
+        log.info(resp.error);
         return;
     }
 
@@ -131,7 +132,7 @@ export function obj_read() {
 
     const resp = s3_client.get(obj.bucket, obj.object);
     if (!resp.success) {
-        console.log(resp.error);
+        log.info(resp.error);
     } 
 }
 
@@ -147,7 +148,7 @@ export function obj_delete() {
 
     const resp = s3_client.delete(obj.s3_bucket, obj.s3_key);
     if (!resp.success) {
-        console.log(`Error deleting object ${obj.id}: ${resp.error}`);
+        log.info(`Error deleting object ${obj.id}: ${resp.error}`);
         return;
     }
 
