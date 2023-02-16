@@ -114,7 +114,7 @@ export function obj_write() {
     const { payload, hash } = generator.genPayload(registry_enabled);
     const resp = s3_client.put(bucket, key, payload);
     if (!resp.success) {
-        log.info(resp.error);
+        log.withFields({bucket: bucket, key: key}).error(resp.error);
         return;
     }
 
@@ -132,7 +132,7 @@ export function obj_read() {
 
     const resp = s3_client.get(obj.bucket, obj.object);
     if (!resp.success) {
-        log.info(resp.error);
+        log.withFields({bucket: obj.bucket, key: obj.object}).error(resp.error);
     } 
 }
 
@@ -148,7 +148,7 @@ export function obj_delete() {
 
     const resp = s3_client.delete(obj.s3_bucket, obj.s3_key);
     if (!resp.success) {
-        log.info(`Error deleting object ${obj.id}: ${resp.error}`);
+        log.withFields({bucket: obj.s3_bucket, key: obj.s3_key, op: "DELETE"}).error(resp.error);
         return;
     }
 

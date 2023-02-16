@@ -87,7 +87,7 @@ export function obj_write() {
 
     const resp = http.post(`http://${http_endpoint}/upload/${container}`, data);
     if (resp.status != 200) {
-        log.info(`ERROR: ${resp.status} ${resp.error}`);
+        log.withFields({status: resp.status, cid: container}).error(resp.error);
         return;
     }
     const object_id = JSON.parse(resp.body).object_id;
@@ -104,7 +104,7 @@ export function obj_read() {
     const obj = obj_list[Math.floor(Math.random() * obj_list.length)];
     const resp = http.get(`http://${http_endpoint}/get/${obj.container}/${obj.object}`);
     if (resp.status != 200) {
-        log.info(`ERROR reading ${obj.object}: ${resp.status}`);
+        log.withFields({status: resp.status, cid: obj.container, oid: obj.object}).error(resp.error);
     }
 }
 
