@@ -1,5 +1,6 @@
 import datagen from 'k6/x/frostfs/datagen';
 import native from 'k6/x/frostfs/native';
+import logging from 'k6/x/frostfs/logging';
 import registry from 'k6/x/frostfs/registry';
 import { SharedArray } from 'k6/data';
 import { sleep } from 'k6';
@@ -18,6 +19,7 @@ const read_size = JSON.parse(open(__ENV.PREGEN_JSON)).obj_size;
 const grpc_endpoints = __ENV.GRPC_ENDPOINTS.split(',');
 const grpc_endpoint = grpc_endpoints[Math.floor(Math.random() * grpc_endpoints.length)];
 const grpc_client = native.connect(grpc_endpoint, '', __ENV.DIAL_TIMEOUT ? parseInt(__ENV.DIAL_TIMEOUT) : 5, __ENV.STREAM_TIMEOUT ? parseInt(__ENV.STREAM_TIMEOUT) : 15);
+const log = logging.new().withField("endpoint", grpc_endpoint);
 
 const registry_enabled = !!__ENV.REGISTRY_FILE;
 const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE) : undefined;
@@ -116,7 +118,7 @@ export function obj_write() {
     const { payload, hash } = generator.genPayload(registry_enabled);
     const resp = grpc_client.put(container, headers, payload);
     if (!resp.success) {
-        console.log({cid: container, error: resp.error});
+        log.withField("cid", container).info(resp.error);
         return;
     }
 
@@ -133,7 +135,7 @@ export function obj_read() {
     const obj = obj_list[Math.floor(Math.random() * obj_list.length)];
     const resp = grpc_client.get(obj.container, obj.object)
     if (!resp.success) {
-        console.log({cid: obj.container, oid: obj.object, error: resp.error});
+        log.withFields({cid: obj.container, oid: obj.object}).info(resp.error);
     }
 }
 
@@ -150,7 +152,7 @@ export function obj_delete() {
     const resp = grpc_client.delete(obj.c_id, obj.o_id);
     if (!resp.success) {
         // Log errors except (2052 - object already deleted)
-        console.log({cid: obj.c_id, oid: obj.o_id, error: resp.error});
+        log.withFields({cid: obj.c_id, oid: obj.o_id}).info(resp.error);
         return;
     }
 
