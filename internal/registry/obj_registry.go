@@ -59,7 +59,7 @@ func NewObjRegistry(ctx context.Context, dbFilePath string) *ObjRegistry {
 }
 
 func (o *ObjRegistry) AddObject(cid, oid, s3Bucket, s3Key, payloadHash string) error {
-	return o.boltDB.Update(func(tx *bbolt.Tx) error {
+	return o.boltDB.Batch(func(tx *bbolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists([]byte(bucketName))
 		if err != nil {
 			return err
@@ -90,7 +90,7 @@ func (o *ObjRegistry) AddObject(cid, oid, s3Bucket, s3Key, payloadHash string) e
 }
 
 func (o *ObjRegistry) SetObjectStatus(id uint64, newStatus string) error {
-	return o.boltDB.Update(func(tx *bbolt.Tx) error {
+	return o.boltDB.Batch(func(tx *bbolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists([]byte(bucketName))
 		if err != nil {
 			return err
@@ -116,7 +116,7 @@ func (o *ObjRegistry) SetObjectStatus(id uint64, newStatus string) error {
 }
 
 func (o *ObjRegistry) DeleteObject(id uint64) error {
-	return o.boltDB.Update(func(tx *bbolt.Tx) error {
+	return o.boltDB.Batch(func(tx *bbolt.Tx) error {
 		b, err := tx.CreateBucketIfNotExists([]byte(bucketName))
 		if err != nil {
 			return err

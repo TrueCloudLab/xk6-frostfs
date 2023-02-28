@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"sync"
 
+	"go.etcd.io/bbolt"
 	"go.k6.io/k6/js/modules"
 )
 
@@ -58,18 +59,19 @@ func (r *Registry) Exports() modules.Exports {
 // in the specified file. If repository instance for the file was previously created, then
 // Open will return the existing instance of repository, because bolt database allows only
 // one write connection at a time.
-func (r *Registry) Open(dbFilePath string) *ObjRegistry {
+func (r *Registry) Open(dbFilePath string, workers int) *ObjRegistry {
 	r.root.mu.Lock()
 	defer r.root.mu.Unlock()
-	return r.open(dbFilePath)
+	return r.open(dbFilePath, workers)
 }
 
 // Implementation of Open without mutex lock, so that it can be re-used in other methods.
-func (r *Registry) open(dbFilePath string) *ObjRegistry {
+func (r *Registry) open(dbFilePath string, workers int) *ObjRegistry {
 	registry := r.root.registries[dbFilePath]
 	if registry == nil {
 		registry = NewObjRegistry(r.vu.Context(), dbFilePath)
 		r.root.registries[dbFilePath] = registry
+		registry.boltDB.MaxBatchSize = workers / 2
 	}
 	return registry
 }
@@ -85,7 +87,7 @@ func (r *Registry) GetSelector(dbFilePath string, name string, cacheSize int, fi
 
 	selector := r.root.selectors[name]
 	if selector == nil {
-		registry := r.open(dbFilePath)
+		registry := r.open(dbFilePath, bbolt.DefaultMaxBatchSize)
 		selector = NewObjSelector(registry, cacheSize, objFilter)
 		r.root.selectors[name] = selector
 	} else if !reflect.DeepEqual(selector.filter, objFilter) {

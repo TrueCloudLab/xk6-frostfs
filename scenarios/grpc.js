@@ -21,8 +21,11 @@ const grpc_endpoint = grpc_endpoints[Math.floor(Math.random() * grpc_endpoints.l
 const grpc_client = native.connect(grpc_endpoint, '', __ENV.DIAL_TIMEOUT ? parseInt(__ENV.DIAL_TIMEOUT) : 5, __ENV.STREAM_TIMEOUT ? parseInt(__ENV.STREAM_TIMEOUT) : 15);
 const log = logging.new().withField("endpoint", grpc_endpoint);
 
+const write_vu_count = parseInt(__ENV.WRITERS || '0');
+const read_vu_count = parseInt(__ENV.READERS || '0');
+const delete_vu_count = parseInt(__ENV.DELETERS || '0');
 const registry_enabled = !!__ENV.REGISTRY_FILE;
-const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE) : undefined;
+const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE, write_vu_count + delete_vu_count) : undefined;
 
 const duration = __ENV.DURATION;
 
@@ -45,7 +48,6 @@ const generator = datagen.generator(1024 * parseInt(__ENV.WRITE_OBJ_SIZE));
 
 const scenarios = {};
 
-const write_vu_count = parseInt(__ENV.WRITERS || '0');
 if (write_vu_count > 0) {
     scenarios.write = {
         executor: 'constant-vus',
@@ -56,7 +58,6 @@ if (write_vu_count > 0) {
     };
 }
 
-const read_vu_count = parseInt(__ENV.READERS || '0');
 if (read_vu_count > 0) {
     scenarios.read = {
         executor: 'constant-vus',
@@ -67,7 +68,6 @@ if (read_vu_count > 0) {
     };
 }
 
-const delete_vu_count = parseInt(__ENV.DELETERS || '0');
 if (delete_vu_count > 0) {
     if (!obj_to_delete_selector) {
         throw new Error('Positive DELETE worker number without a proper object selector');
