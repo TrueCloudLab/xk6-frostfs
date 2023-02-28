@@ -39,7 +39,7 @@ if (registry_enabled && delete_age) {
     );
 }
 
-const generator = datagen.generator(1024 * parseInt(__ENV.WRITE_OBJ_SIZE));
+const generator = datagen.generator(1024 * parseInt(__ENV.WRITE_OBJ_SIZE), __ENV.PAYLOAD_TYPE || "");
 
 const scenarios = {};
 

@@ -16,25 +16,25 @@ func TestGenerator(t *testing.T) {
 
 	t.Run("fails on negative size", func(t *testing.T) {
 		require.Panics(t, func() {
-			_ = NewGenerator(vu, -1)
+			_ = NewGenerator(vu, -1, "")
 		})
 	})
 
 	t.Run("fails on zero size", func(t *testing.T) {
 		require.Panics(t, func() {
-			_ = NewGenerator(vu, 0)
+			_ = NewGenerator(vu, 0, "")
 		})
 	})
 
 	t.Run("creates slice of specified size", func(t *testing.T) {
 		size := 10
-		g := NewGenerator(vu, size)
+		g := NewGenerator(vu, size, "")
 		slice := g.nextSlice()
 		require.Len(t, slice, size)
 	})
 
 	t.Run("creates a different slice on each call", func(t *testing.T) {
-		g := NewGenerator(vu, 1000)
+		g := NewGenerator(vu, 1000, "")
 		slice1 := g.nextSlice()
 		slice2 := g.nextSlice()
 		// Each slice should be unique (assuming that 1000 random bytes will never coincide
@@ -43,7 +43,7 @@ func TestGenerator(t *testing.T) {
 	})
 
 	t.Run("keeps generating slices after consuming entire tail", func(t *testing.T) {
-		g := NewGenerator(vu, 1000)
+		g := NewGenerator(vu, 1000, "")
 		initialSlice := g.nextSlice()
 		for i := 0; i < TailSize; i++ {
 			g.nextSlice()

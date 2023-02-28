@@ -9,8 +9,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/config v1.15.5
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.26.9
 	github.com/dop251/goja v0.0.0-20220405120441-9037c2b61cbf
+	github.com/go-loremipsum/loremipsum v1.1.3
 	github.com/google/uuid v1.3.0
 	github.com/nspcc-dev/neo-go v0.99.4
+	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.8.0
 	go.etcd.io/bbolt v1.3.6
 	go.k6.io/k6 v0.38.2
@@ -54,7 +56,6 @@ require (
 	github.com/oxtoacart/bpool v0.0.0-20190530202638-03653db5a59c // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/serenize/snaker v0.0.0-20201027110005-a7ad2135616e // indirect
-	github.com/sirupsen/logrus v1.8.1 // indirect
 	github.com/spaolacci/murmur3 v1.1.0 // indirect
 	github.com/spf13/afero v1.1.2 // indirect
 	golang.org/x/crypto v0.0.0-20220315160706-3147a52a75dd // indirect

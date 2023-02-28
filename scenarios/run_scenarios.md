@@ -14,6 +14,7 @@ Scenarios `grpc.js`, `http.js` and `s3.js` support the following options:
   * `SLEEP_WRITE` - time interval (in seconds) between writing VU iterations.
   * `SLEEP_READ` - time interval (in seconds) between reading VU iterations.
   * `SELECTION_SIZE` - size of batch to select for deletion (default: 1000).
+  * `PAYLOAD_TYPE` - type of an object payload ("random" or "text", default: "random").
 
 Examples of how to use these options are provided below for each scenario.
 
