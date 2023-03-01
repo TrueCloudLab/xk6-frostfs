@@ -4,6 +4,7 @@ import logging from 'k6/x/frostfs/logging';
 import registry from 'k6/x/frostfs/registry';
 import { SharedArray } from 'k6/data';
 import { sleep } from 'k6';
+import { textSummary } from './libs/k6-summary-0.0.2.js';
 
 const obj_list = new SharedArray('obj_list', function () {
     return JSON.parse(open(__ENV.PREGEN_JSON)).objects;
@@ -14,6 +15,7 @@ const container_list = new SharedArray('container_list', function () {
 });
 
 const read_size = JSON.parse(open(__ENV.PREGEN_JSON)).obj_size;
+const summary_json = __ENV.SUMMARY_JSON || "/tmp/summary.json";
 
 // Select random gRPC endpoint for current VU
 const grpc_endpoints = __ENV.GRPC_ENDPOINTS.split(',');
@@ -103,6 +105,13 @@ export function teardown(data) {
     if (obj_registry) {
         obj_registry.close();
     }
+}
+
+export function handleSummary(data) {
+    return {
+        'stdout': textSummary(data, { indent: ' ', enableColors: false }),
+        [summary_json]: JSON.stringify(data),
+    };
 }
 
 export function obj_write() {

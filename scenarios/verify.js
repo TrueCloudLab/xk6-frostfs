@@ -3,11 +3,13 @@ import registry from 'k6/x/frostfs/registry';
 import s3 from 'k6/x/frostfs/s3';
 import { sleep } from 'k6';
 import { Counter } from 'k6/metrics';
+import { textSummary } from './libs/k6-summary-0.0.2.js';
 
 const obj_registry = registry.open(__ENV.REGISTRY_FILE);
 
 // Time limit (in seconds) for the run
 const time_limit = __ENV.TIME_LIMIT || "60";
+const summary_json = __ENV.SUMMARY_JSON || "/tmp/summary.json";
 
 // Number of objects in each status. These counters are cumulative in a
 // sense that they reflect total number of objects in the registry, not just
@@ -78,6 +80,13 @@ export function setup() {
             { status });
         counter.add(obj_selector.count());
     }
+}
+
+export function handleSummary(data) {
+    return {
+        'stdout': textSummary(data, { indent: ' ', enableColors: false }),
+        [summary_json]: JSON.stringify(data),
+    };
 }
 
 export function obj_verify() {
