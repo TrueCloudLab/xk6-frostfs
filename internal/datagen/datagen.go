@@ -1,6 +1,8 @@
 package datagen
 
 import (
+	"strings"
+
 	"go.k6.io/k6/js/modules"
 )
 
@@ -36,7 +38,7 @@ func (d *Datagen) Exports() modules.Exports {
 	return modules.Exports{Default: d}
 }
 
-func (d *Datagen) Generator(size int) *Generator {
-	g := NewGenerator(d.vu, size)
+func (d *Datagen) Generator(size int, typ string) *Generator {
+	g := NewGenerator(d.vu, size, strings.ToLower(typ))
 	return &g
 }

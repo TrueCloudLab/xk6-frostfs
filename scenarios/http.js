@@ -26,7 +26,7 @@ const obj_registry = registry_enabled ? registry.open(__ENV.REGISTRY_FILE) : und
 
 const duration = __ENV.DURATION;
 
-const generator = datagen.generator(1024 * parseInt(__ENV.WRITE_OBJ_SIZE));
+const generator = datagen.generator(1024 * parseInt(__ENV.WRITE_OBJ_SIZE), __ENV.PAYLOAD_TYPE || "");
 
 const scenarios = {};
 
