@@ -22,6 +22,7 @@ type (
 	Generator struct {
 		vu     modules.VU
 		size   int
+		rand   *rand.Rand
 		buf    []byte
 		offset int
 	}
@@ -35,15 +36,16 @@ type (
 // TailSize specifies number of extra random bytes in the buffer tail.
 const TailSize = 1024
 
-func init() {
-	rand.Seed(time.Now().UnixNano())
-}
-
 func NewGenerator(vu modules.VU, size int) Generator {
 	if size <= 0 {
 		panic("size should be positive")
 	}
-	return Generator{vu: vu, size: size, buf: nil, offset: 0}
+	return Generator{
+		vu:   vu,
+		size: size,
+		rand: rand.New(rand.NewSource(time.Now().UnixNano())),
+		buf:  make([]byte, size+TailSize),
+	}
 }
 
 func (g *Generator) GenPayload(calcHash bool) GenPayloadResponse {
@@ -60,10 +62,9 @@ func (g *Generator) GenPayload(calcHash bool) GenPayloadResponse {
 }
 
 func (g *Generator) nextSlice() []byte {
-	if g.buf == nil {
-		// Allocate buffer with extra tail for sliding and populate it with random bytes
-		g.buf = make([]byte, g.size+TailSize)
-		rand.Read(g.buf) // Per docs, err is always nil here
+	if g.offset >= TailSize {
+		g.offset = 0
+		g.rand.Read(g.buf) // Per docs, err is always nil here
 	}
 
 	result := g.buf[g.offset : g.offset+g.size]
@@ -71,10 +72,5 @@ func (g *Generator) nextSlice() []byte {
 	// Shift the offset for the next call. If we've used our entire tail, then erase
 	// the buffer so that on the next call it is regenerated anew
 	g.offset += 1
-	if g.offset >= TailSize {
-		g.buf = nil
-		g.offset = 0
-	}
-
 	return result
 }
